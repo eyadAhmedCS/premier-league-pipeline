@@ -1,7 +1,6 @@
 PRAGMA foreign_keys = ON;
 CREATE TABLE Seasons(
-season_id INT PRIMARY KEY,
-"year" INT,
+year INT PRIMARY KEY,
 start_date TEXT CHECK (date(start_date) IS NOT NULL),
 end_date TEXT CHECK (date(end_date) IS NOT NULL),
 "current" INT DEFAULT 0 CHECK("current" IN (0,1)),
@@ -35,7 +34,7 @@ winner_team_id INT,
 FOREIGN KEY (home_team_id) REFERENCES Teams(team_id),
 FOREIGN KEY (away_team_id) REFERENCES Teams(team_id),
 FOREIGN KEY (winner_team_id) REFERENCES Teams(team_id),
-FOREIGN KEY (season_id) REFERENCES Seasons(season_id),
+FOREIGN KEY (season_id) REFERENCES Seasons(year),
 CHECK(home_team_id <> away_team_id),
 CHECK(home_score_ht >= 0),
 CHECK(away_score_ht >= 0),
@@ -54,11 +53,11 @@ draws INT,
 losses INT,
 goals_for INT,
 goals_against INT,
-goal_diff INT,
+goals_diff INT,
 CHECK (points<=114 AND points>=0 AND wins <=38 AND wins >=0 
-AND draws <=38 AND draws >=0 AND losses <=38 AND losses >=0 AND goal_diff = goals_for-goals_against),
+AND draws <=38 AND draws >=0 AND losses <=38 AND losses >=0),
 FOREIGN KEY (team_id) REFERENCES Teams(team_id),
-FOREIGN KEY (season_id) REFERENCES Seasons(season_id),
+FOREIGN KEY (season_id) REFERENCES Seasons(year),
 PRIMARY KEY(matchweek,team_id,season_id),
 CHECK(rank > 0),
 CHECK(wins + draws + losses <= 38)
@@ -67,7 +66,7 @@ CHECK(wins + draws + losses <= 38)
 CREATE TABLE Team_Match_Stats(
 match_id INT,
 team_id INT,
-possession INT,
+possession DECIMAL(10,2),
 shots_total INT,
 shots_on_target INT,
 corners INT,
@@ -76,9 +75,8 @@ offsides INT,
 yellow_cards INT,
 red_cards INT,
 passes_total INT,
-passes_accuracy INT,
-goals_scored INT,
-goals_conceded INT,
+passes_accuracy DECIMAL(10,2),
+expected_goals DECIMAL(10,2),
 FOREIGN KEY (team_id) REFERENCES Teams(team_id),
 FOREIGN KEY (match_id) REFERENCES Matches(match_id),
 PRIMARY KEY(team_id,match_id),
@@ -91,16 +89,14 @@ CHECK(fouls >= 0),
 CHECK(offsides >= 0),
 CHECK(yellow_cards >= 0),
 CHECK(red_cards >= 0),
-CHECK(passes_total >= 0),
-CHECK(goals_scored >= 0),
-CHECK(goals_conceded >= 0)
+CHECK(passes_total >= 0)
 );
 
 CREATE TABLE Coach(
 coach_id INT,
-age INT,
 name VARCHAR(200) NOT NULL,
-country VARCHAR(200),
+date_of_birth TEXT CHECK(date_of_birth IS NULL OR date(date_of_birth) IS NOT NULL),
+nationality VARCHAR(200),
 PRIMARY KEY(coach_id)
 );
 

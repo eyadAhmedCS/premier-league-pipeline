@@ -260,7 +260,7 @@ def transform_standings():
 
     # transform the list to dataframe then save it as csv file
     df= pd.DataFrame(data_list,
-        columns=['matchweek','team_id','year','rank','points','wins','draws','losses','goals_for','goals_against','goals_diff'])    
+        columns=['matchweek','team_id','season_id','rank','points','wins','draws','losses','goals_for','goals_against','goals_diff'])    
     df.to_csv("data/processed/standings.csv",index=False)
     print('standings transformation process have succeeded')
 

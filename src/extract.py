@@ -90,7 +90,7 @@ def extract_seasons_matches_stats():
     for i,file in enumerate(glob.glob("data/raw/fixtures/*.json")):
 
         pointer=int(pointer_list[i])
-        season=re.findall('fixtures(\d+)',file)[0]
+        season=re.findall(r'fixtures(\d+)',file)[0]
 
         # check if the file have allready read
         if pointer>=380 :
@@ -169,6 +169,28 @@ def extract_Coachs():
 
             time.sleep(7)        
 
+def extract_coaches_page():
+
+    if os.path.exists(f"data/raw/coachs_teams/coachs_teams.html"):
+        print('the page have already saved')
+        return
+    
+    page_headers = {
+    "User-Agent": html_headers
+    }
+    
+    response= requests.get(html_url,headers= page_headers)
+
+    if response.status_code != 200:
+        print("Failed to fetch page")
+        return
+    
+    html_page= response.text
+    
+
+    with open('data/raw/coachs_teams/coachs_teams.html','w', encoding='utf-8') as f:
+        f.write(html_page)
+
 
 #1. Load variables from .env file
 load_dotenv()
@@ -176,6 +198,8 @@ load_dotenv()
 # 2. setup impotant tool for requests
 api_key=os.getenv("API_KEY")
 api_url=os.getenv("API_HOST")
+html_url=os.getenv('HTML_URL')
+html_headers= os.getenv('REQUEST_HEADERS')
 
 headers = {
     "x-apisports-key": api_key
@@ -215,7 +239,8 @@ print("\nEctract coachs proccess have started")
 extract_Coachs()
 print("Ectract coachs proccess have ended")
 
-
-
+print("\nEctract coachs page proccess have started")
+extract_coaches_page()
+print("Ectract coachs page proccess have ended")
 
 

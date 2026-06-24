@@ -3,8 +3,7 @@ CREATE TABLE Seasons(
 year INT PRIMARY KEY,
 start_date TEXT CHECK (date(start_date) IS NOT NULL),
 end_date TEXT CHECK (date(end_date) IS NOT NULL),
-"current" INT DEFAULT 0 CHECK("current" IN (0,1)),
-CHECK (start_date<end_date)
+"current" INT DEFAULT 0 CHECK("current" IN (0,1))
 );
 
 CREATE TABLE Teams(
@@ -105,7 +104,6 @@ coach_id INT,
 team_id INT,
 start_date TEXT CHECK(date(start_date) IS NOT NULL),
 end_date TEXT CHECK(end_date IS NULL OR date(end_date) IS NOT NULL),
-CHECK(start_date < end_date),
 FOREIGN KEY (team_id) REFERENCES Teams(team_id),
 FOREIGN KEY(coach_id) REFERENCES Coach(coach_id),
 PRIMARY KEY(team_id,start_date,coach_id)

@@ -3,6 +3,21 @@ import sqlite3
 import os
 from dotenv import load_dotenv
 
+load_dotenv()
+
+
+conn = sqlite3.connect(os.getenv("DB_Loacation"))
+conn.execute("PRAGMA foreign_keys = ON")
+
+cursor = conn.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';")
+tables = cursor.fetchall()
+
+if not tables:
+    with open('database/schema.sql', 'r') as f:
+        conn.executescript(f.read())
+    conn.commit()
+
 def load_Seasons_data():
    try:
       df = pd.read_csv('data/processed/seasons.csv')
@@ -59,41 +74,35 @@ def load_Coachs_teams_data():
    except Exception as e:
       print('an error have ocuurd in coachs_teams loading', e)
 
-load_dotenv()
 
+def run():
 
-conn = sqlite3.connect(os.getenv("DB_Loacation"))
-conn.execute("PRAGMA foreign_keys = ON")
+   print('\nLoading seasons process started...')
+   load_Seasons_data()
+   print('Loading seasons process finished')
 
-with open('database/schema.sql', 'r') as f:
-    conn.executescript(f.read())
+   print('\nLoading teams process started...')
+   load_Teams_data()
+   print('Loading teams process finished')
 
-print('\nLoading seasons process started...')
-load_Seasons_data()
-print('Loading seasons process finished')
+   print('\nLoading coachs process started...')
+   load_Coach_data()
+   print('Loading coachs process finished')
 
-print('\nLoading teams process started...')
-load_Teams_data()
-print('Loading teams process finished')
+   print('\nLoading coachs_teams process started...')
+   load_Coachs_teams_data()
+   print('Loading coachs_teams process finished')
 
-print('\nLoading coachs process started...')
-load_Coach_data()
-print('Loading coachs process finished')
+   print('\nLoading standings process started...')
+   load_Standings_data()
+   print('Loading standings process finished')
 
-print('\nLoading coachs_teams process started...')
-load_Coachs_teams_data()
-print('Loading coachs_teams process finished')
+   print('\nLoading matches process started...')
+   load_Matches_data()
+   print('Loading matches process finished')
 
-print('\nLoading standings process started...')
-load_Standings_data()
-print('Loading standings process finished')
+   print('\nLoading matches_stats process started...')
+   load_Match_Stats_data()
+   print('Loading maches_stats process finished')
 
-print('\nLoading matches process started...')
-load_Matches_data()
-print('Loading matches process finished')
-
-print('\nLoading matches_stats process started...')
-load_Match_Stats_data()
-print('Loading maches_stats process finished')
-
-conn.close()
+   conn.close()   

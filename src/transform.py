@@ -397,32 +397,32 @@ def transform_matches_stats():
     df.to_csv("data/processed/matches_stats.csv",index=False)
     print('matches stats transformation process have succeeded')
 
+def run():
 
+    print('\nTransforming seasons process started...')
+    transform_seasons()
+    print('Transforming seasons process finished')
 
-print('\nTransforming seasons process started...')
-transform_seasons()
-print('Transforming seasons process finished')
+    print('\nTransforming teams process started...')
+    transform_teams()
+    print('Transforming teams process finished')
 
-print('\nTransforming teams process started...')
-transform_teams()
-print('Transforming teams process finished')
+    print('\nTransforming coachs process started...')
+    transform_coachs()
+    print('Transforming coachs process finished')
 
-print('\nTransforming coachs process started...')
-transform_coachs()
-print('Transforming coachs process finished')
+    print('\nTransforming coachs_teams process started...')
+    transform_coachs_teams()
+    print('Transforming coachs_teams process finished')
 
-print('\nTransforming coachs_teams process started...')
-transform_coachs_teams()
-print('Transforming coachs_teams process finished')
+    print('\nTransforming standings process started...')
+    transform_standings()
+    print('Transforming standings process finished')
 
-print('\nTransforming standings process started...')
-transform_standings()
-print('Transforming standings process finished')
+    print('\nTransforming matches process started...')
+    transform_matches()
+    print('Transforming matches process finished')
 
-print('\nTransforming matches process started...')
-transform_matches()
-print('Transforming matches process finished')
-
-print('\nTransforming matches_stats process started...')
-transform_matches_stats()
-print('Transforming maches_stats process finished')
+    print('\nTransforming matches_stats process started...')
+    transform_matches_stats()
+    print('Transforming maches_stats process finished')

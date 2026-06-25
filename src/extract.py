@@ -7,6 +7,22 @@ import re
 import json
 from dotenv import load_dotenv
 
+# Load variables from .env file
+load_dotenv()
+
+#  setup impotant tool for requests
+api_key=os.getenv("API_KEY")
+api_url=os.getenv("API_HOST")
+html_url=os.getenv('HTML_URL')
+html_headers= os.getenv('REQUEST_HEADERS')
+
+headers = {
+        "x-apisports-key": api_key
+    }
+
+# the season we will extract 22/23 , 23/24, 24/25
+seasons=list(range(2022,2025))
+
 def extract_seasons():
      # check if we have allready read the matches
     if os.path.exists("data/raw/seasons/season_data.json"):
@@ -192,55 +208,42 @@ def extract_coaches_page():
         f.write(html_page)
 
 
-#1. Load variables from .env file
-load_dotenv()
-
-# 2. setup impotant tool for requests
-api_key=os.getenv("API_KEY")
-api_url=os.getenv("API_HOST")
-html_url=os.getenv('HTML_URL')
-html_headers= os.getenv('REQUEST_HEADERS')
-
-headers = {
-    "x-apisports-key": api_key
-}
-
-# the season we will extract 22/23 , 23/24, 24/25
-seasons=list(range(2022,2025))
 
 
-# 3. make the requests for all seasons
-print("\nEctract seasons proccess have started")
-extract_seasons()
-print("Ectract seasons proccess have ended")
-
-# 4. make the requests for all teams acrros all seasons
-print("\nEctract teams proccess have started")
-extract_teams_accros_seasons()
-print("Ectract teams proccess have ended")
-
-# 5. make the requests for standings acrros all seasons
-print("\nEctract standings proccess have started")
-extract_seasons_standing()
-print("Ectract standings proccess have ended")
-
-# 6. make the requests for all matches acrros all seasons
-print("\nEctract matches proccess have started")
-extract_seasons_matches()
-print("Ectract matches proccess have ended")
-
-# 7. make request for matches stats
-print("\nExtract Matches stas have started")
-extract_seasons_matches_stats()
-print("Extract Matches stats have ended")
-
-# 8. make the request for all coachs
-print("\nEctract coachs proccess have started")
-extract_Coachs()
-print("Ectract coachs proccess have ended")
-
-print("\nEctract coachs page proccess have started")
-extract_coaches_page()
-print("Ectract coachs page proccess have ended")
 
 
+def run():
+
+    # 3. make the requests for all seasons
+    print("\nEctract seasons proccess have started")
+    extract_seasons()
+    print("Ectract seasons proccess have ended")
+
+    # 4. make the requests for all teams acrros all seasons
+    print("\nEctract teams proccess have started")
+    extract_teams_accros_seasons()
+    print("Ectract teams proccess have ended")
+
+    # 5. make the requests for standings acrros all seasons
+    print("\nEctract standings proccess have started")
+    extract_seasons_standing()
+    print("Ectract standings proccess have ended")
+
+    # 6. make the requests for all matches acrros all seasons
+    print("\nEctract matches proccess have started")
+    extract_seasons_matches()
+    print("Ectract matches proccess have ended")
+
+    # 7. make request for matches stats
+    print("\nExtract Matches stas have started")
+    extract_seasons_matches_stats()
+    print("Extract Matches stats have ended")
+
+    # 8. make the request for all coachs
+    print("\nEctract coachs proccess have started")
+    extract_Coachs()
+    print("Ectract coachs proccess have ended")
+
+    print("\nEctract coachs page proccess have started")
+    extract_coaches_page()
+    print("Ectract coachs page proccess have ended")
